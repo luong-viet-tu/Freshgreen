@@ -1,0 +1,12 @@
+export const Logo = require("../resources/images/logo.png");
+export const Banner = require("../resources/images/banner.png");
+export const Banner2 = require("../resources/images/banner2.png");
+export const LoginBg = require("../resources/images/login.png");
+export const HomeAds1 = require("../resources/images/HomeAds1.png");
+export const HomeAds2 = require("../resources/images/HomeAds2.png");
+export const HomeAds3 = require("../resources/images/HomeAds3.png");
+export const NoImage = require("../resources/images/noImage.png");
+export const StoreImage = require("../resources/images/storeImage.png");
+export const MomoLogo = require("../resources/images/momo.png");
+export const VNpayLogo = require("../resources/images/vnpay.png");
+export const VisaLogo = require("../resources/images/visa.png");
