@@ -19,9 +19,10 @@ interface SelectionFormProps {
   disabled: boolean;
 }
 
-export const AddressForm = React.memo((props: SelectionFormProps) => {
+export const AddressForm = React.memo((props: any) => {
   const id = useId();
 
+  
   return (
     <FormControl sx={{ width: "45%" }}>
       <InputLabel id={id}>{props.name}</InputLabel>
@@ -31,15 +32,20 @@ export const AddressForm = React.memo((props: SelectionFormProps) => {
         defaultValue={props.address[props.name.toLowerCase()] || ""}
         label={props.name}
         disabled={props.disabled}
-        onChange={(e) =>
+        onChange={(e) => {
+          // props.handleChange(props.name.toLowerCase(), e.target.value)
           props.handleChange(props.name.toLowerCase(), e.target.value)
         }
+         
+        }
       >
-        {props?.data.length ? props.data.map((province: any, index) => (
-          <MenuItem key={index} value={province.name}>
-            {province.name}
-          </MenuItem>
-        )): null}
+        {props?.data.length ? props.data.map((province: any, index: any) => {
+          return (
+            <MenuItem key={index} value={province?.id}>
+              {province?.name}
+            </MenuItem>
+          )
+        }): null}
       </Select>
     </FormControl>
   );

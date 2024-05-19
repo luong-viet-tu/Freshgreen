@@ -123,7 +123,7 @@ const PayInformation = memo(() => {
             payData: {
               totalPrice,
               amount: totalPay,
-              address: addressOfUser(user.address),
+              address: addressOfUser(user?.address),
               phone: user?.phone,
               email: user?.email,
               nameOfUser: fullnameOfUser(user.fullname!),
@@ -157,10 +157,12 @@ const PayInformation = memo(() => {
           });
         dispatch(clearCart());
         navigate("/quan-li-don-hang");
-      } finally {
+      } catch (e: any) {
+        console.log(e)
+      }finally {
         setIsLoading({ pay: false });
       }
-    }
+    } 
   };
 
   return (

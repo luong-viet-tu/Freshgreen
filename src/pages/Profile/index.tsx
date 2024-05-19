@@ -23,7 +23,7 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getProvince } from "../../utils/api/getProvince";
+import { getDistricts, getProvince, getProvinces, getWards } from "../../utils/api/getProvince";
 import { userActions } from "../../actions/userActions";
 import { AddressForm, AddressProps } from "./components/AddressForm";
 import VerifyPhoneModal from "./components/VerifyPhoneModal";
@@ -96,10 +96,14 @@ const Profile = () => {
       more: user?.address?.more || "",
     } || user?.address
   );
+  const [dataAddressSetup, setDataAddressSetup] = useState({
+    province_id: "",
+    district_id: ""
+  })
   const [locationData, setLocationData] = useState<{
-    provinces: { name: string }[];
-    districts: { name: string }[];
-    wards: { name: string }[];
+    provinces: { id: string, name: string, type: string }[];
+    districts: { id: string, name: string, type: string }[];
+    wards: { id: string, name: string, type: string }[];
   }>({
     provinces: [],
     districts: [],
@@ -113,49 +117,59 @@ const Profile = () => {
 
   // get provider
   useEffect(() => {
-    const getProvinces = async () => {
+    const getDataProvinces = async () => {
       try {
-        const data = await getProvince();
+        const data = await getProvinces()
         setLocationData((prevData) => ({
           ...prevData,
-          provinces: data,
+          provinces: data?.map((item: any) => ({
+            id: item.province_id,
+          name: item.province_name,
+          type: item.province_type,
+          })),
         }));
         setDataAddress(data);
       } catch (e) {
         throw e;
       }
     };
-    getProvinces();
+    getDataProvinces();
   }, [isDisable]);
+
 
   // get cities, wards, disticts
   useEffect(() => {
-    if (dataAddress && dataAddress.length > 0) {
-      const matchingDataCity: any = dataAddress.find(
-        (data: any) => data.name === address.city
-      );
-
-      if (matchingDataCity) {
-        setLocationData((prevData) => ({
-          ...prevData,
-          districts: matchingDataCity.districts,
-        }));
-      }
+    const getDataDistricts = async () => {
+      if (!dataAddressSetup.province_id) return
+      const data = await getDistricts(+dataAddressSetup.province_id)
+      setLocationData((prevData) => ({
+        ...prevData,
+        districts: data?.map((item: any) => ({
+          id: item.district_id,
+          name: item.district_name,
+          type: item.district_type,
+        })),
+      }));
     }
 
-    if (locationData.districts && locationData.districts.length > 0) {
-      const matchingDataDistrict: any = locationData.districts.find(
-        (data: any) => data.name === address.district
-      );
+  const  getDataWards = async () => {
+    if (!dataAddressSetup.district_id) return
+    const data = await getWards(+dataAddressSetup.district_id)
 
-      if (matchingDataDistrict) {
-        setLocationData((prevData) => ({
-          ...prevData,
-          wards: matchingDataDistrict.wards,
-        }));
-      }
-    }
-  }, [address, dataAddress, locationData.districts]);
+    setLocationData((prevData) => ({
+      ...prevData,
+       wards: data?.map((item: any) => ({
+          id: item.ward_id,
+          name: item.ward_name,
+          type: item.ward_type,
+        })),
+    }));
+  }
+  getDataWards()
+    getDataDistricts()
+  }, [address])
+
+
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -248,11 +262,44 @@ const Profile = () => {
   }, [isDisable]);
 
   const handleChange = (name: string, value: string) => {
-    setAddress((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === 'city') {
+      setDataAddressSetup(prev => ({
+        ...prev,
+        province_id: value
+      }))
+      const province = locationData.provinces.find(p => p.id === value)?.name
+      setAddress((prevData) => ({
+        ...prevData,
+        [name]: province!,
+      }));
+    }
+
+    if (name === 'district') {
+      setDataAddressSetup(prev => ({
+        ...prev,
+        district_id: value
+      }))
+      const district = locationData.districts.find(p => p.id === value)?.name
+      setAddress((prevData) => ({
+        ...prevData,
+        [name]: district!,
+      }));
+    }
+    
+    if (name === 'ward') {
+      const ward = locationData.wards.find(p => p.id === value)?.name
+      setAddress((prevData) => ({
+        ...prevData,
+        [name]: ward!,
+      }));
+    }
+    
+   
   };
+
+  console.log(dataAddressSetup)
+
+
 
   // handle update avatar user
   const onChangeImage = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -597,7 +644,7 @@ const Profile = () => {
               data={locationData.provinces}
               address={address}
               setAddress={setAddress}
-              handleChange={(n, v) => handleChange(n, v)}
+              handleChange={(n: any, v: any) => handleChange(n, v)}
               disabled={!isDisable}
             />
             <AddressForm
@@ -605,7 +652,7 @@ const Profile = () => {
               data={locationData.districts}
               address={address}
               setAddress={setAddress}
-              handleChange={(n, v) => handleChange(n, v)}
+              handleChange={(n: any, v: any) => handleChange(n, v)}
               disabled={!isDisable}
             />
             <AddressForm
@@ -613,7 +660,7 @@ const Profile = () => {
               data={locationData.wards}
               address={address}
               setAddress={setAddress}
-              handleChange={(n, v) => handleChange(n, v)}
+              handleChange={(n: any, v: any) => handleChange(n, v)}
               disabled={!isDisable}
             />
             <TextField

@@ -55,22 +55,22 @@ const Footer = () => {
     {
       icon: <FacebookIcon />,
       title: "Facebook",
-      url: "https://www.facebook.com/1150694301/",
+      url: "https://www.facebook.com/TuLV01062002",
     },
     {
       icon: <TwitterIcon />,
       title: "Twitter",
-      url: "https://twitter.com/dat54261001",
+      url: "https://www.facebook.com/TuLV01062002",
     },
     {
       icon: <YouTubeIcon />,
       title: "Youtube",
-      url: "https://www.youtube.com/channel/UCEt_3J34Gnx_HaWeMcCX9xw",
+      url: "https://www.facebook.com/TuLV01062002",
     },
     {
       icon: <InstagramIcon />,
       title: "Instagram",
-      url: "",
+      url: "https://www.facebook.com/TuLV01062002",
     },
   ];
 
@@ -171,7 +171,7 @@ const Footer = () => {
           <Box display={"flex"} alignItems={"center"} gap={1}>
             <LocationOnIcon sx={{ color: mainColor }} />
             <Typography fontWeight={600}>Địa chỉ:</Typography>
-            <Typography>17 Dang Thuy Tram, P17, Binh Thanh, HCMC</Typography>
+            <Typography>Đại học Công Nghiệp Hà Nội</Typography>
           </Box>
           <Box display={"flex"} alignItems={"center"} gap={1}>
             <HeadphonesIcon sx={{ color: mainColor }} />
@@ -181,7 +181,7 @@ const Footer = () => {
           <Box display={"flex"} alignItems={"center"} gap={1}>
             <SendIcon sx={{ color: mainColor }} />
             <Typography fontWeight={600}>Email:</Typography>
-            <Typography>dat54261001@gmail.com.com</Typography>
+            <Typography>luongviettu01062002@gmail.com</Typography>
           </Box>
           <Box display={"flex"} alignItems={"center"} gap={1}>
             <AccessTimeIcon sx={{ color: mainColor }} />
@@ -268,9 +268,9 @@ const Footer = () => {
               fontWeight: 600,
               color: mainColor,
             }}
-            href="https://facebook.com/1150694301"
+            href="https://www.facebook.com/TuLV01062002"
           >
-            Bui Huu Dat
+            Lường Viết Tú
           </a>
         </Typography>
         <Box
