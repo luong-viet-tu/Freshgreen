@@ -81,7 +81,7 @@ const ProductDetails = () => {
   }, [product, dispatch]);
 
   const isFavorite = favoriteProducts.filter(
-    (p) => p._id === product?._id
+    (p) => p?._id === product?._id
   ).length;
 
   useEffect(() => {

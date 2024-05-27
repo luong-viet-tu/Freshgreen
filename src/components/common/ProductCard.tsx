@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ProductType } from "../../types/productType";
@@ -44,9 +44,9 @@ const ProductCard = memo(
     const favoriteProducts = useAppSelector(
       (state: RootState) => state.favorite.favoriteProducts
     );
-    const isFavorite = favoriteProducts.filter(
-      (p) => p._id === product._id
-    ).length;
+    const isFavorite = useMemo(() =>  favoriteProducts.filter(
+      (p) => p?._id === product?._id
+    )?.length, [favoriteProducts]);
 
     const handleAddCart = useCallback(() => {
       if (!userId) {
